@@ -39,7 +39,7 @@
   .scene{position:relative;line-height:0}
   canvas{display:block;width:100%}
 
-  .pilotage{display:flex;align-items:flex-start;gap:12px}
+  .pilotage{display:flex;align-items:center;gap:12px}
   .lecture{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--encre);background:var(--papier);color:var(--encre);
            display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .lecture:hover{background:var(--encre);color:var(--papier)}
@@ -49,22 +49,14 @@
   .lecture[data-etat="fin"] .ico-rejouer{display:block}
 
   .etapes{flex:1;min-width:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-  .etapes button{display:block;width:100%;min-height:44px;padding:0 0 4px;border:0;background:none;font:inherit;text-align:left;
-                 color:var(--gris);cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .jauge{display:block;height:3px;background:var(--filet);overflow:hidden}
+  .etapes button{display:flex;align-items:center;width:100%;min-height:44px;padding:0;border:0;background:none;font:inherit;
+                 cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .jauge{display:block;flex:1;height:3px;background:var(--filet);overflow:hidden}
+  .etapes button:hover .jauge{background:#c4c4c8}
   .jauge i{display:block;height:100%;width:0;background:var(--rouge)}
-  .nom{display:block;margin-top:9px;font-size:13px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .num{font-variant-numeric:tabular-nums;margin-right:5px}
-  .etapes button:hover .nom{color:var(--encre)}
-  .etapes button.actif{color:var(--encre)}
-  .etapes button.actif .nom{font-weight:600}
 
   button:focus-visible{outline:2px solid var(--bleu);outline-offset:3px}
 
-  .legendes{display:grid}
-  .legende{grid-area:1/1;display:flex;flex-direction:column;gap:6px;visibility:hidden;opacity:0;transition:opacity .3s}
-  .legende.actif{visibility:visible;opacity:1}
-  .legende h2{font-family:var(--titre);font-weight:700;font-size:20px;line-height:1.2}
 
   .source{font-size:12px;line-height:1.45;color:var(--gris);border-top:1px solid var(--filet);padding-top:10px}
 
@@ -74,16 +66,11 @@
     .cle{gap:5px 14px;font-size:12px}
     .pilotage{gap:10px}
     .etapes{gap:4px}
-    .nom{font-size:12px}
-    .num{display:none}
-    .legende h2{font-size:18px}
   }
   @media (max-width:400px){
     :root{--marge:16px}
     html.embarque{--marge:0px}
-    .nom{font-size:11.5px}
   }
-  @media (prefers-reduced-motion:reduce){ .legende{transition:none} }
 </style>
 <script>
   /* Bloc iFrame du Grand Continent (iframe-resizer) : quand la page parente répond,
@@ -120,18 +107,11 @@
       <svg class="ico-rejouer" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 8 A5.2 5.2 0 1 1 11.3 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9.2 1.2 L12.6 4.3 L8.6 5.9 Z" fill="currentColor"/></svg>
     </button>
     <ol class="etapes">
-      <li><button type="button" data-i="0"><span class="jauge"><i></i></span><span class="nom"><span class="num">1</span>{{etape0}}</span></button></li>
-      <li><button type="button" data-i="1"><span class="jauge"><i></i></span><span class="nom"><span class="num">2</span>{{etape1}}</span></button></li>
-      <li><button type="button" data-i="2"><span class="jauge"><i></i></span><span class="nom"><span class="num">3</span>{{etape2}}</span></button></li>
-      <li><button type="button" data-i="3"><span class="jauge"><i></i></span><span class="nom"><span class="num">4</span>{{etape3}}</span></button></li>
+      <li><button type="button" data-i="0" aria-label="{{etape0}}"><span class="jauge"><i></i></span></button></li>
+      <li><button type="button" data-i="1" aria-label="{{etape1}}"><span class="jauge"><i></i></span></button></li>
+      <li><button type="button" data-i="2" aria-label="{{etape2}}"><span class="jauge"><i></i></span></button></li>
+      <li><button type="button" data-i="3" aria-label="{{etape3}}"><span class="jauge"><i></i></span></button></li>
     </ol>
-  </div>
-
-  <div class="legendes">
-    <section class="legende" data-i="0"><h2>{{l0t}}</h2></section>
-    <section class="legende" data-i="1"><h2>{{l1t}}</h2></section>
-    <section class="legende" data-i="2"><h2>{{l2t}}</h2></section>
-    <section class="legende" data-i="3"><h2>{{l3t}}</h2></section>
   </div>
 
   <p class="source">{{note}}<br>{{source}}</p>

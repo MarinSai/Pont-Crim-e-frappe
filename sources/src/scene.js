@@ -39,9 +39,9 @@
     strait: { lon: 36.57, lat: 45.285, kpu: .044 },
     region: { lon: 34.3, lat: 46.55, kpu: .86 },
     pont: { mpu: .70, cx: 462, cy: 304 },
-    s1: { crimee: [36.372, 45.335], russie: [36.775, 45.205], azov: [36.662, 45.392], noire: [36.545, 45.185], touzla: [36.563, 45.262, 'left'],
+    s1: { crimee: [36.372, 45.335], russie: [36.775, 45.205], azov: [36.636, 45.381], noire: [36.545, 45.185], touzla: [36.563, 45.262, 'left'],
           pont: [36.612, 45.296], card: [26, 322, 262, 132], loc: [940, 62, 44], coude: 'h', chenal: [36.574, 45.341, 'left'] },
-    s2: { ukraine: [31.2, 48.25], russie: [39.0, 47.55], crimee: [34.15, 45.22], noire: [31.4, 44.95], azov: [36.75, 46.2],
+    s2: { ukraine: [31.2, 48.25], russie: [39.0, 47.55], crimee: [34.35, 44.8], noire: [31.4, 44.95], azov: [37.35, 46.38],
           villes: [['odessa', 30.73, 46.48, 'right'], ['mykolaiv', 32.0, 46.97, 'left'], ['dnipro', 35.05, 48.46, 'left'], ['zapo', 35.14, 47.84, 'left']],
           salve: [[291, 480], [299, 440], [306, 395], [314, 400, 1], [322, 330], [330, 345], [338, 335], [346, 350]], defLabel: [254, 262] },
     s3: { chip: [18, 30, 'left'], vagues: 150, chenalY: 215,
@@ -53,9 +53,9 @@
     strait: { lon: 36.555, lat: 45.285, kpu: .056 },
     region: { lon: 33.8, lat: 46.9, kpu: 1.286 },
     pont: { mpu: .88, cx: 232, cy: 322 },
-    s1: { crimee: [36.412, 45.378], russie: [36.676, 45.166], azov: [36.618, 45.4], noire: [36.541, 45.226], touzla: [36.566, 45.262, 'left'],
-          pont: [36.578, 45.304], card: [12, 456, 318, 148], loc: [452, 48, 34], coude: 'v', chenal: null, tamanCote: 'right' },
-    s2: { ukraine: [32.6, 48.6], russie: [37.5, 44.93], crimee: null, pontGauche: true, noire: [31.6, 44.5], azov: [36.75, 46.25],
+    s1: { crimee: [36.412, 45.378], russie: [36.7, 45.19], azov: [36.618, 45.4], noire: [36.535, 45.253], touzla: [36.566, 45.262, 'left'],
+          pont: [36.578, 45.304], card: [12, 438, 318, 148], loc: [452, 48, 34], coude: 'v', chenal: null, tamanCote: 'right' },
+    s2: { ukraine: [32.6, 48.6], russie: [37.5, 44.93], crimee: null, pontGauche: true, noire: [31.6, 44.5], azov: [37.25, 46.42],
           villes: [['odessa', 30.73, 46.48, 'left'], ['dnipro', 35.05, 48.46, 'left'], ['zapo', 35.14, 47.84, 'left'], ['kharkiv', 36.23, 49.99, 'left']],
           salve: [[291, 480], [301, 430], [312, 400, 1], [322, 330], [332, 345], [344, 350]], defLabel: [252, 262] },
     s3: { chip: [482, 30, 'right'], vagues: 100, chenalY: 112,
@@ -80,6 +80,8 @@
   const ring = (pts, P) => { pts.forEach((p, i) => { const q = P(p[0], p[1]); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); };
 
   // ---------- Outils de dessin ----------
+  const DBG = /[?&]t=/.test(location.search), ETQ = window.__etq = [];   // boîtes des étiquettes de la dernière image, en px (contrôle visuel)
+  const boite = (txt, x0, y0, x1, y1, g) => { if (DBG && ctx === main && ctx.globalAlpha > .55) ETQ.push([txt, x0 / u, y0 / u, x1 / u, y1 / u, g || '']); };
   let NU = 0, voileN = 0;                // NU : 0 = jour, 1 = nuit (inverse les encres des étiquettes)
   const FOND_NUIT = [12, 30, 48], BORD = 18;   // BORD : marge minimale des étiquettes, en px écran
   const h2 = c => { if (c[0] === '#'){ const n = parseInt(c.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; } return c.match(/\d+/g).slice(0, 3).map(Number); };
@@ -90,7 +92,7 @@
   const halo = (a = .92) => { const m = mixA([255, 255, 255], FOND_NUIT, NU); return `rgba(${m[0]},${m[1]},${m[2]},${a})`; };
   const dash = (...d) => ctx.setLineDash(d.map(v => v * u));
   function label(txt, x, y, o = {}){
-    const { color = C.encre, align = 'center', w = 500, size = 12, halo: hl = true, font = FONT, italic = false, clampX = true } = o;
+    const { color = C.encre, align = 'center', w = 500, size = 12, halo: hl = true, font = FONT, italic = false, clampX = true, g = '', dbg = true } = o;
     ctx.font = `${italic ? 'italic ' : ''}${w} ${size * u}px ${font}`; ctx.textAlign = align; ctx.textBaseline = 'middle';
     const tw = ctx.measureText(txt).width;
     if (clampX){
@@ -101,6 +103,7 @@
     }
     if (hl){ ctx.lineJoin = 'round'; ctx.lineWidth = 3.5 * u; ctx.strokeStyle = halo(); ctx.strokeText(txt, x, y); }
     ctx.fillStyle = tc(color); ctx.fillText(txt, x, y);
+    if (dbg){ const x0 = align === 'center' ? x - tw / 2 : align === 'left' ? x : x - tw; boite(txt, x0, y - size * u * .55, x0 + tw, y + size * u * .55, g); }
     return tw;
   }
   function caps(txt, x, y, o = {}){       // capitales espacées (noms de pays)
@@ -108,6 +111,7 @@
     ctx.font = `${w} ${size * u}px ${FONT}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     const ws = [...txt].map(ch => ctx.measureText(ch).width), tot = ws.reduce((a, b) => a + b, 0) + sp * u * (txt.length - 1);
     let cx = clamp(x - tot / 2, BORD * u, L.VW - tot - BORD * u);
+    boite(txt, cx, y - size * u * .55, cx + tot, y + size * u * .55);
     ctx.lineJoin = 'round'; ctx.lineWidth = 3 * u; ctx.strokeStyle = 'rgba(255,255,255,.85)';
     [...txt].forEach((ch, i) => { ctx.strokeText(ch, cx, y); ctx.fillStyle = color; ctx.fillText(ch, cx, y); cx += ws[i] + sp * u; });
   }
@@ -123,10 +127,11 @@
     ctx.font = `600 ${11.5 * u}px ${FONT}`;
     const w = ctx.measureText(txt).width + 18 * u, h = 22 * u;
     if (align === 'left') x += w / 2; else if (align === 'right') x -= w / 2;
-    x = clamp(x, w / 2 + BORD * u, L.VW - w / 2 - BORD * u);
+    x = clamp(x, w / 2 + BORD * u, L.VW - w / 2 - BORD * u); y = Math.max(y, (BORD - 4) * u + h / 2);
     const x0 = x - w / 2, y0 = y - h / 2, r = h / 2;
     ctx.beginPath(); ctx.moveTo(x0 + r, y0); ctx.arcTo(x0 + w, y0, x0 + w, y0 + h, r); ctx.arcTo(x0 + w, y0 + h, x0, y0 + h, r);
     ctx.arcTo(x0, y0 + h, x0, y0, r); ctx.arcTo(x0, y0, x0 + w, y0, r); ctx.closePath();
+    boite(txt, x0, y0, x0 + w, y0 + h);
     ctx.fillStyle = tc(fill); ctx.fill(); ctx.lineWidth = 1.2 * u; ctx.strokeStyle = tc(color); ctx.stroke();
     ctx.fillStyle = tc(ink); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, x, y + .5 * u);
   }
@@ -216,12 +221,20 @@
     ctx.fillStyle = col; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = .8 * u; ctx.stroke();
     ctx.restore();
   }
+  function carteRect(){
+    const [x0, y0, w0, h0] = L.s1.card;
+    ctx.font = `700 ${14 * u}px ${TITRE}`; const tw14 = ctx.measureText(T.carteTitre).width;
+    const corps = clamp(14 * (w0 - 28 * u) / tw14, 11.5, 14), tw = tw14 * corps / 14;      // le titre rétrécit un peu avant d'élargir l'encadré
+    const w = Math.min(Math.max(w0, tw + 28 * u), L.VW - 2 * BORD * u), h = h0 * clamp(u / (L.full ? 1 : 1.28), 1, 1.5);
+    return [Math.min(x0, L.VW - BORD * u - w), L.full ? y0 : y0 + h0 - h, w, h, corps];     // sur téléphone, l'encadré grandit vers le haut
+  }
   function carteArches(t, a){
-    const [x, y, w, h] = L.s1.card;
+    const [x, y, w, h, corps] = carteRect();
+    boite('[encadré]', x, y, x + w, y + h, 'carte');
     ctx.save(); ctx.globalAlpha *= a;
     ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.strokeStyle = C.filet; ctx.lineWidth = 1 * u;
     ctx.beginPath(); ctx.rect(x, y, w, h); ctx.fill(); ctx.stroke();
-    label(T.carteTitre, x + 12 * u, y + 17 * u, { align: 'left', font: TITRE, w: 700, size: 14, halo: false, clampX: false });
+    label(T.carteTitre, x + 12 * u, y + 17 * u, { align: 'left', font: TITRE, w: 700, size: corps, halo: false, clampX: false, g: 'carte' });
     // élévation : 227 m de portée, tablier à 35 m, flèche de 45 m
     const k = Math.min((w - 98 * u) / 227, (h - 68 * u) / 80), bx = x + 74 * u + (w - 98 * u - 227 * k) / 2, wy = y + h - 16 * u, dy = wy - 35 * k, top = dy - 45 * k;
     ctx.save(); ctx.beginPath(); ctx.rect(x + 1, y + 26 * u, w - 2, h - 27 * u); ctx.clip();
@@ -247,10 +260,10 @@
     const cy = top - 9 * u;
     ctx.beginPath(); ctx.moveTo(bx, cy); ctx.lineTo(bx + 227 * k, cy); ctx.moveTo(bx, cy - 3 * u); ctx.lineTo(bx, cy + 3 * u); ctx.moveTo(bx + 227 * k, cy - 3 * u); ctx.lineTo(bx + 227 * k, cy + 3 * u); ctx.stroke();
     ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.fillRect(bx + 227 * k / 2 - 22 * u, cy - 7 * u, 44 * u, 14 * u);
-    label(T.portee, bx + 227 * k / 2, cy, { size: 12, w: 600, halo: false, clampX: false });
+    label(T.portee, bx + 227 * k / 2, cy, { size: 12, w: 600, halo: false, clampX: false, g: 'carte' });
     const cx = bx - 22 * u;
     ctx.beginPath(); ctx.moveTo(cx, dy); ctx.lineTo(cx, wy); ctx.moveTo(cx - 3 * u, dy); ctx.lineTo(cx + 3 * u, dy); ctx.moveTo(cx - 3 * u, wy); ctx.lineTo(cx + 3 * u, wy); ctx.stroke();
-    label(T.tirant, cx - 6 * u, (dy + wy) / 2, { size: 12, w: 600, halo: false, align: 'right', clampX: false });
+    label(T.tirant, cx - 6 * u, (dy + wy) / 2, { size: 12, w: 600, halo: false, align: 'right', clampX: false, g: 'carte' });
     ctx.restore();
   }
   function localisation(){
@@ -281,7 +294,7 @@
     });
     // étiquettes de fond
     sea(T.azov, ...P1(o.azov[0], o.azov[1]));
-    sea(T.noire, ...P1(o.noire[0], o.noire[1]));
+    { const p = P1(o.noire[0], o.noire[1]), cr = carteRect(); if (L.full || p[1] + 18 * u < cr[1]) sea(T.noire, p[0], p[1]); }     // masquée si l'encadré la recouvre
     caps(T.crimee, ...P1(o.crimee[0], o.crimee[1])); caps(T.russie, ...P1(o.russie[0], o.russie[1]));
     { const p = P1(o.touzla[0], o.touzla[1]); label(T.touzla, p[0], p[1], { size: 11.5, color: C.gris, italic: true, align: o.touzla[2] }); }
     if (o.chenal){ const p = P1(o.chenal[0], o.chenal[1]); label(T.chenal, p[0], p[1], { size: 11.5, color: C.merTexte, italic: true, align: o.chenal[2], halo: false }); }
@@ -306,16 +319,16 @@
     // les arches
     const aA = clamp((t - 4.1) / .6);
     if (aA > 0){
-      const [ax, ay] = pont1.arch, [cx, cy, cw, ch] = o.card;
+      const [ax, ay] = pont1.arch, [cx, cy, cw, ch] = carteRect();
       ctx.save(); ctx.globalAlpha *= aA;
       for (let i = 0; i < 2; i++){ const f = ((t * .5 + i / 2) % 1); ctx.strokeStyle = rgba(C.rouge, .5 * (1 - f)); ctx.lineWidth = 1.4 * u; ctx.beginPath(); ctx.arc(ax, ay, (9 + 16 * f) * u, 0, 7); ctx.stroke(); }
       ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.strokeStyle = C.rouge; ctx.lineWidth = 1.8 * u; ctx.beginPath(); ctx.arc(ax, ay, 8.5 * u, 0, 7); ctx.fill(); ctx.stroke();
-      if (o.coude === 'h') filet([[cx + cw, cy + ch / 2], [ax, cy + ch / 2], [ax, ay + 8.5 * u]], false);
+      if (ax > cx + cw + 10 * u) filet([[cx + cw, cy + ch / 2], [ax, cy + ch / 2], [ax, ay + 8.5 * u]], false);
       else filet([[ax, cy], [ax, ay + 8.5 * u]], false);
       ctx.restore();
       carteArches(t, aA);
     }
-    ctx.drawImage(locLay, 0, 0, L.VW, L.VH);
+    ctx.drawImage(locLay, 0, 0, L.VW, L.VH); { const [gx, gy, gr] = L.s1.loc; boite('[globe]', gx - gr * u, gy - gr * u, gx + gr * u, gy + gr * u, 'globe'); }
     echelle(T.km5, 5 / L.strait.kpu);
     ctx.restore();
   }
@@ -368,10 +381,6 @@
     const o = L.s2, B = R2.b;
     ctx.save(); ctx.globalAlpha = a;
     ctx.drawImage(lay2, 0, 0, L.VW, L.VH);
-    sea(T.noire, ...P2(o.noire[0], o.noire[1])); sea(T.azov, ...P2(o.azov[0], o.azov[1]), 12);
-    caps(T.ukraine, ...P2(o.ukraine[0], o.ukraine[1])); caps(T.russie, ...P2(o.russie[0], o.russie[1])); if (o.crimee) caps(T.crimee, ...P2(o.crimee[0], o.crimee[1]), { size: 9.5 });
-    o.villes.forEach(([k, lon, lat, side]) => city(T[k], ...P2(lon, lat), side, { size: 12.5 }));
-
     // distance de lancement citée par le WSJ : 300 miles
     const aS = clamp((t - 5.4) / .8);
     if (aS > 0){
@@ -404,6 +413,11 @@
       label(T.defenses, R2.def[0], R2.def[1], { w: 600, size: 12.5 }); label(T.schema, R2.def[0], R2.def[1] + 15 * u, { color: C.gris, size: 11 });
       ctx.restore(); }
 
+    // étiquettes de fond, par-dessus les arcs
+    sea(T.noire, ...P2(o.noire[0], o.noire[1])); sea(T.azov, ...P2(o.azov[0], o.azov[1]), 12);
+    caps(T.ukraine, ...P2(o.ukraine[0], o.ukraine[1])); caps(T.russie, ...P2(o.russie[0], o.russie[1])); if (o.crimee) caps(T.crimee, ...P2(o.crimee[0], o.crimee[1]), { size: 9.5 });
+    o.villes.forEach(([k, lon, lat, side]) => city(T[k], ...P2(lon, lat), side, { size: 12.5 }));
+
     // drones relais et liaison
     const aR = clamp((t - 5.4) / .8);
     const guide = R2.salve.find(d => d.g);
@@ -429,7 +443,7 @@
       const brg = Math.atan2(B[1] - R2.stub[1], B[0] - R2.stub[0]);
       R2.relais.forEach((r, i) => delta(r[0], r[1] + 1.6 * Math.sin(t * 1.3 + i * 2) * u, 7, C.papier, C.bleu, brg));
       const r1 = R2.relais[1]; if (L.full){ label(T.relais, r1[0] + 12 * u, r1[1] + 17 * u, { w: 600, size: 12, align: 'left' }); label(T.relaisSous, r1[0] + 12 * u, r1[1] + 31 * u, { color: C.gris, size: 11.5, align: 'left' }); }
-      else { label(T.relais, r1[0] - 14 * u, r1[1] + 8 * u, { w: 600, size: 12, align: 'right' }); label(T.relaisSous, r1[0] - 14 * u, r1[1] + 22 * u, { color: C.gris, size: 11.5, align: 'right' }); }
+      else { label(T.relais, r1[0] - 14 * u, r1[1] + 8 * u, { w: 600, size: 12, align: 'right' }); label(T.relaisSousCourt, r1[0] - 14 * u, r1[1] + 22 * u, { color: C.gris, size: 11.5, align: 'right' }); }
       ctx.restore();
     }
 
@@ -601,9 +615,9 @@
     st.lean = 4 * easeIO((tau - 2.5) / 1.3);
     st.c = Math.max(0, (tau - TC) / 1.7);
     st.hf = 1 - easeIO(clamp(st.c) * 1.15);
-    st.trafic = Math.max(clamp(1 - (tau - 1.4) / .5), win(tau, 4.2, 6.0, .5));
-    st.nuit = easeIO((tau - 6.0) / 1.3);
-    const ap = easeIO((tau - 3.9) / 1.3);                 // l'après-midi, les ombres s'allongent
+    st.trafic = Math.max(clamp(1 - (tau - 1.4) / .5), win(tau, 4.5, 6.0, .5));
+    st.nuit = Math.max(1 - easeIO((tau - 3.3) / 1.2), easeIO((tau - 6.0) / 1.3));   // nuit du 15 au 16, journée du 16, nuit du 16 au 17
+    const ap = easeIO((tau - 4.8) / 1.2);                 // l'après-midi, les ombres s'allongent
     st.sx = lerp(.06, .22, ap); st.sy = lerp(-.5, -.95, ap); st.sa = lerp(.17, .14, ap) * (1 - st.nuit);
     st.dore = ap * (1 - st.nuit);
     return st;
@@ -726,8 +740,9 @@
 
     // repères fixes
     const cote = (pos, txt) => label(txt, pos[0], pos[1], { size: 11.5, color: C.gris, align: pos[2], italic: true });
-    cote(o.crimee, pos3(T.versCrimee, '↖', o.crimee[2])); cote(o.russieL, pos3(T.versRussie, '↘', o.russieL[2]));
-    { const p = L2S(0, o.chenalY); ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(ROT - Math.PI / 2); label(T.chenalNav, 0, 0, { size: 11.5, color: C.merTexte, italic: true, halo: false, clampX: false }); ctx.restore(); }
+    const sousChip = L.full ? 0 : Math.max(0, 50 * u - o.crimee[1]);     // sur petit écran, la pastille pousse les repères vers le bas
+    cote([o.crimee[0], o.crimee[1] + sousChip, o.crimee[2]], pos3(T.versCrimee, '↖', o.crimee[2])); cote(o.russieL, pos3(T.versRussie, '↘', o.russieL[2]));
+    { const p = L2S(0, o.chenalY); ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(ROT - Math.PI / 2); label(T.chenalNav, 0, 0, { size: 11.5, color: C.merTexte, italic: true, halo: false, clampX: false, dbg: false }); ctx.restore(); }
     // étiquette alignée à gauche, renvoyée vers une cible du pont (repère local)
     const renvoi = (pos, cible, m) => { const q = L2S(cible[0], cible[1]);
       if (q[0] >= pos[0] && q[0] <= pos[0] + m.w){ filet([[q[0], q[1] < m.top ? m.top - 3 * u : m.bot + 3 * u], [q[0], q[1]]]); return; }
@@ -740,14 +755,14 @@
 
     if (!bilan){
       { const w = label(T.ferro, o.ferro[0], o.ferro[1], { w: 600, size: 12.5, align: 'left' }); renvoi(o.ferro, [o.ferro[2], RAILW], { w, mid: o.ferro[1], top: o.ferro[1] - 9 * u, bot: o.ferro[1] + 9 * u }); }
-      { const w = label(T.routier, o.routier[0], o.routier[1], { w: 600, size: 12.5, align: 'left' }); renvoi(o.routier, [o.routier[2], ROADY - ROADW], { w, mid: o.routier[1], top: o.routier[1] - 9 * u, bot: o.routier[1] + 9 * u }); }
+      { const ry = o.routier[1] + sousChip * 1.4, w = label(T.routier, o.routier[0], ry, { w: 600, size: 12.5, align: 'left' }); renvoi([o.routier[0], ry], [o.routier[2], ROADY - ROADW], { w, mid: ry, top: ry - 9 * u, bot: ry + 9 * u }); }
       // repère de date
-      const cp = o.chip, d1 = win(tau, .3, 4.0), d2 = win(tau, 4.2, 6.1), d3 = clamp((tau - 6.4) / .4);
+      const cp = o.chip, d1 = win(tau, .3, 3.6), d2 = win(tau, 3.9, 6.1), d3 = clamp((tau - 6.4) / .4);
       const dc = (al, txt, col, fill, ink) => { if (al <= 0) return; ctx.save(); ctx.globalAlpha *= al; chip(txt, cp[0], cp[1], col, fill, ink, cp[2]); ctx.restore(); };
-      dc(d1, T.j16m, C.encre, C.papier, C.encre); dc(d2, T.j16a, C.encre, C.papier, C.encre); dc(d3, T.nuit, C.encre, C.encre, C.papier);
+      dc(d1, T.j16m, C.encre, C.encre, C.papier); dc(d2, T.j16a, C.encre, C.papier, C.encre); dc(d3, T.nuit, C.encre, C.encre, C.papier);
       an(win(tau, 1.3, 2.9), [-58, -38.5], T.vague1, null, o.pal, C.bleu);
-      an(win(tau, 3.0, 4.1), [0, ROADY - ROADW - 9], T.destab, null, o.pal);
-      an(win(tau, 4.4, 6.0), [60, ROADY - ROADW], T.reprise, null, o.pal);
+      an(win(tau, 3.0, 4.5), [0, ROADY - ROADW - 6], T.destab, null, o.pal);
+      an(win(tau, 4.7, 6.0), [60, ROADY - ROADW], T.reprise, null, o.pal);
       an(win(tau, 7.3, 11.9), [62, ROADY + ROADW - 1], T.pal, L.full ? T.palSous : T.palSousCourt, o.pal, C.bleu);
       an(win(tau, 8.3, 12.3), [-52, RAILW + 2], L.full ? T.missiles : T.missilesCourt, L.full ? T.missilesSous : T.missilesSousCourt, o.mis, C.bleu);
       an(clamp((tau - TC - 1.9) / .5), [10, ROADY - ROADW - 30], T.effondre, null, o.pal, C.rouge);
@@ -784,7 +799,7 @@
   const stepAt = t => { for (let i = 0; i < 4; i++) if (t < TL.steps[i][1]) return i; return 3; };
   function render(t){
     ctx.setTransform(dpr * s, 0, 0, dpr * s, 0, 0);
-    NU = 0; voileN = 0;
+    NU = 0; voileN = 0; ETQ.length = 0;
     ctx.globalAlpha = 1; ctx.fillStyle = C.papier; ctx.fillRect(0, 0, L.VW, L.VH);
     draw1(t, clamp(t / .5) * clamp((S2 - t) / .55));
     draw2(t - S2, clamp((t - S2 + .05) / .6) * clamp((S3 - t) / .55));
@@ -825,7 +840,7 @@
   let gen = 0;
   function resize(){
     const w = sceneEl.clientWidth; if (!w) return;
-    const next = w < 560 ? NARROW : WIDE;
+    const next = w < 640 ? NARROW : WIDE;
     L = next; s = w / L.VW; u = 1 / s; dpr = Math.min(2.5, window.devicePixelRatio || 1);
     cv.style.height = (L.VH * s).toFixed(1) + 'px';
     cv.width = Math.round(w * dpr); cv.height = Math.round(L.VH * s * dpr);
