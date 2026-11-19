@@ -1,0 +1,112 @@
+{
+  "fr": {
+    "lang": "fr",
+    "fichier": "pont_crimee_frappe_FR.html",
+    "titre": "Comment l’Ukraine a détruit une partie du pont de Crimée",
+    "chapo": "Une reconstitution de l’attaque qui pourrait marquer un tournant dans la guerre.",
+    "cle": [
+      "Drone ou missile ukrainien",
+      "Drone relais",
+      "Impact",
+      "Défense aérienne russe",
+      "Zone d’occupation russe",
+      "Section effondrée"
+    ],
+    "aria": "Animation en quatre étapes : la situation du pont de Crimée dans le détroit de Kertch ; les frappes préparatoires et la salve synchronisée ; les impacts sur les sections routière et ferroviaire et l’effondrement de l’arche routière ; le bilan pour la route, le rail et le chenal.",
+    "lire": "Lancer l’animation",
+    "pause": "Mettre l’animation en pause",
+    "rejouer": "Rejouer l’animation",
+    "etapes": [
+      "Le pont",
+      "Le couloir",
+      "L’impact",
+      "Le bilan"
+    ],
+    "legendes": [
+      [
+        "Un pont double de 19 kilomètres",
+        "Construit après l’annexion de la Crimée en 2014, le pont relie la péninsule de Taman, en Russie, à Kertch. Il porte une route à quatre voies, ouverte en 2018, et une double voie ferrée, ouverte fin 2019. Deux arches de 227 mètres enjambent, à 35 mètres au-dessus de l’eau, le chenal qui relie la mer Noire à la mer d’Azov."
+      ],
+      [
+        "Un mois pour ouvrir un couloir",
+        "Selon Volodymyr Zelensky, l’opération a duré plusieurs semaines et compté sept étapes : drones et missiles ont d’abord détruit des systèmes de défense aérienne, des radars et des moyens de guerre électronique sur la route du pont. Pour l’attaque principale, des drones lancés jusqu’à 480 kilomètres de distance ont été synchronisés pour arriver à la même minute. Sans recourir à Starlink, des drones relais transmettaient les commandes aux munitions."
+      ],
+      [
+        "Deux jours de frappes",
+        "Le 16 novembre au matin, une première vague de drones endommage l’arche routière, qui penche ; la circulation reprend l’après-midi. Dans la nuit, des drones à réaction Palianytsia frappent la section routière, des missiles Neptune, Ruta et FP-5 Flamingo la section ferroviaire. L’arche routière et son tablier s’effondrent dans le détroit."
+      ],
+      [
+        "Route coupée, chenal obstrué",
+        "La circulation routière est interrompue. Un nombre limité de trains continue de franchir le pont : l’arche ferroviaire, endommagée, est restée debout. Les débris de l’arche routière bloquent le chenal de navigation."
+      ]
+    ],
+    "source": "Sources&nbsp;: Présidence et État-major ukrainiens, The Wall Street Journal, Euromaidan Press, Institute for the Study of War, OpenStreetMap, Natural Earth · Graphique&nbsp;: Le Grand Continent",
+    "c": {
+      "crimee": "CRIMÉE",
+      "russie": "RUSSIE",
+      "ukraine": "UKRAINE",
+      "kertch": "Kertch",
+      "taman": "Taman",
+      "touzla": "île de Touzla",
+      "azov": [
+        "Mer",
+        "d’Azov"
+      ],
+      "noire": [
+        "Mer",
+        "Noire"
+      ],
+      "versAzov": "vers la mer d’Azov",
+      "pont": "Pont de Crimée",
+      "km19": "19 km",
+      "chenal": "chenal Kertch-Iénikalé",
+      "carteTitre": "Deux arches au-dessus du chenal",
+      "portee": "227 m",
+      "tirant": "35 m",
+      "odessa": "Odessa",
+      "mykolaiv": "Mykolaïv",
+      "dnipro": "Dnipro",
+      "zapo": "Zaporijjia",
+      "kharkiv": "Kharkiv",
+      "defenses": "Défenses russes",
+      "schema": "position schématique",
+      "prep": "Frappes préparatoires · environ un mois",
+      "couloir": "Couloir ouvert",
+      "relais": "Drones relais",
+      "km480": "480 km",
+      "departs": "Attaque principale · départs échelonnés",
+      "arrivee": "Arrivée à la même minute",
+      "j16m": "16 novembre, matin",
+      "j16a": "16 novembre, après-midi",
+      "nuit": "Nuit du 16 au 17 novembre",
+      "bilanDate": "Situation au 18 novembre",
+      "vague1": "Première vague de drones",
+      "destab": "Arche routière endommagée",
+      "reprise": "La circulation reprend",
+      "pal": "Palianytsia",
+      "palSous": "section routière",
+      "missiles": "Neptune · Ruta · FP-5 Flamingo",
+      "missilesCourt": "Neptune · Ruta · FP-5",
+      "missilesSous": "section ferroviaire",
+      "routier": "Pont routier",
+      "ferro": "Pont ferroviaire",
+      "versCrimee": "vers Kertch (Crimée)",
+      "versRussie": "vers Taman (Russie)",
+      "effondre": "Arche routière effondrée",
+      "debout": "Arche ferroviaire endommagée, toujours debout",
+      "chenalNav": "chenal de navigation",
+      "m100": "100 m",
+      "km5": "5 km",
+      "km100": "100 km",
+      "bRoute": "Route coupée",
+      "bRouteChiffre": "227 m",
+      "bRouteTexte": "de tablier tombés à l’eau avec l’arche",
+      "bRail": "Rail : trafic réduit",
+      "bRailTexte": "quelques trains franchissent encore le pont",
+      "bChenal": "Chenal obstrué",
+      "bChenalTexte": "les débris bloquent le passage des navires",
+      "deboutCourt": "Arche ferroviaire debout"
+    },
+    "note": "Note&nbsp;: les positions des défenses russes, les trajectoires, les points de départ et les points d’impact sont schématiques."
+  }
+}
