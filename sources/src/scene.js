@@ -82,7 +82,7 @@
   // ---------- Outils de dessin ----------
   const DBG = /[?&]t=/.test(location.search), ETQ = window.__etq = [];   // boîtes des étiquettes de la dernière image, en px (contrôle visuel)
   const boite = (txt, x0, y0, x1, y1, g) => { if (DBG && ctx === main && ctx.globalAlpha > .55) ETQ.push([txt, x0 / u, y0 / u, x1 / u, y1 / u, g || '']); };
-  let NU = 0, voileN = 0;                // NU : 0 = jour, 1 = nuit (inverse les encres des étiquettes)
+  let NU = 0, voileN = 0, LX = 0;        // LX : abscisse finale de la dernière étiquette tracée                // NU : 0 = jour, 1 = nuit (inverse les encres des étiquettes)
   const FOND_NUIT = [12, 30, 48], BORD = 18;   // BORD : marge minimale des étiquettes, en px écran
   const h2 = c => { if (c[0] === '#'){ const n = parseInt(c.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; } return c.match(/\d+/g).slice(0, 3).map(Number); };
   const mixA = (a, b, k) => [0, 1, 2].map(i => Math.round(a[i] + (b[i] - a[i]) * k));
@@ -101,6 +101,7 @@
       else x = clamp(x, tw + BORD * u, L.VW - BORD * u);
       y = clamp(y, (BORD - 4) * u, L.VH - (BORD - 4) * u);
     }
+    LX = x;
     if (hl){ ctx.lineJoin = 'round'; ctx.lineWidth = 3.5 * u; ctx.strokeStyle = halo(); ctx.strokeText(txt, x, y); }
     ctx.fillStyle = tc(color); ctx.fillText(txt, x, y);
     if (dbg){ const x0 = align === 'center' ? x - tw / 2 : align === 'left' ? x : x - tw; boite(txt, x0, y - size * u * .55, x0 + tw, y + size * u * .55, g); }
@@ -747,11 +748,14 @@
     const renvoi = (pos, cible, m) => { const q = L2S(cible[0], cible[1]);
       if (q[0] >= pos[0] && q[0] <= pos[0] + m.w){ filet([[q[0], q[1] < m.top ? m.top - 3 * u : m.bot + 3 * u], [q[0], q[1]]]); return; }
       const sx = q[0] < pos[0] ? pos[0] - 6 * u : pos[0] + m.w + 6 * u; filet([[sx, m.mid], [q[0], m.mid], [q[0], q[1]]]); };
-    // annotation centrée, filet vertical puis horizontal
+    // annotation centrée : le filet part du bord du texte (ou de son aplomb), jamais à travers lui
     const an = (al, cible, txt, sous, pos, col = C.encre) => { if (al <= 0) return; ctx.save(); ctx.globalAlpha *= al; const q = L2S(cible[0], cible[1]);
-      const y0 = q[1] > pos[1] ? pos[1] + (sous ? 25 : 10) * u : pos[1] - 10 * u;
-      filet(Math.abs(y0 - q[1]) < 3 * u ? [[pos[0], y0], [q[0], y0]] : [[pos[0], y0], [pos[0], q[1]], [q[0], q[1]]]);
-      label(txt, pos[0], pos[1], { w: 600, size: 13, color: col }); if (sous) label(sous, pos[0], pos[1] + 15 * u, { size: 11.5, color: C.gris }); ctx.restore(); };
+      let w = label(txt, pos[0], pos[1], { w: 600, size: 13, color: col }); const x1 = LX;
+      if (sous) w = Math.max(w, label(sous, x1, pos[1] + 15 * u, { size: 11.5, color: C.gris }));
+      const my = sous ? pos[1] + 7 * u : pos[1];
+      if (q[0] > x1 - w / 2 - 4 * u && q[0] < x1 + w / 2 + 4 * u) filet([[q[0], q[1] < pos[1] ? pos[1] - 11 * u : pos[1] + (sous ? 25 : 11) * u], [q[0], q[1]]]);
+      else { const sx = q[0] > x1 ? x1 + w / 2 + 6 * u : x1 - w / 2 - 6 * u; filet(Math.abs(my - q[1]) < 3 * u ? [[sx, my], [q[0], my]] : [[sx, my], [q[0], my], [q[0], q[1]]]); }
+      ctx.restore(); };
 
     if (!bilan){
       { const w = label(T.ferro, o.ferro[0], o.ferro[1], { w: 600, size: 12.5, align: 'left' }); renvoi(o.ferro, [o.ferro[2], RAILW], { w, mid: o.ferro[1], top: o.ferro[1] - 9 * u, bot: o.ferro[1] + 9 * u }); }
