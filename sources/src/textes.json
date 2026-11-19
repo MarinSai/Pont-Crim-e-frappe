@@ -33,14 +33,14 @@
       ],
       [
         "Deux jours de frappes",
-        "Le 16 novembre au matin, une première vague de drones endommage l’arche routière, qui penche ; la circulation reprend l’après-midi. Dans la nuit, des drones à réaction Palianytsia frappent la section routière, des missiles Neptune, Ruta et FP-5 Flamingo la section ferroviaire. L’arche routière et son tablier s’effondrent dans le détroit."
+        "Le 16 novembre au matin, une première vague de drones endommage l’arche routière, qui penche ; la circulation reprend l’après-midi. Dans la nuit, des drones à réaction Palianytsia frappent la section routière, près des appuis de l’arche, et des missiles Neptune, Ruta et FP-5 Flamingo la section ferroviaire. L’arche routière et son tablier s’effondrent dans le détroit."
       ],
       [
-        "Route coupée, chenal obstrué",
-        "La circulation routière est interrompue. Un nombre limité de trains continue de franchir le pont : l’arche ferroviaire, endommagée, est restée debout. Les débris de l’arche routière bloquent le chenal de navigation."
+        "Route coupée, rail fragilisé, chenal obstrué",
+        "Environ 225 mètres du pont routier se sont effondrés et restent en partie immergés. Dans la nuit du 18 au 19 novembre, des missiles Neptune ont de nouveau frappé la section ferroviaire, près de l’arche : les trains, d’abord suspendus, ont repris dans l’après-midi. L’arche ferroviaire, endommagée, est restée debout. Les débris de l’arche routière bloquent le chenal de navigation."
       ]
     ],
-    "source": "Sources&nbsp;: Présidence et État-major ukrainiens, The Wall Street Journal, Euromaidan Press, Institute for the Study of War, OpenStreetMap, Natural Earth · Graphique&nbsp;: Le Grand Continent",
+    "source": "Sources&nbsp;: Présidence, État-major et ministère de la Défense ukrainiens, The Wall Street Journal, Euromaidan Press, The War Zone, Vantor, Institute for the Study of War, OpenStreetMap, Natural Earth · Graphique&nbsp;: Le Grand Continent",
     "c": {
       "crimee": "CRIMÉE",
       "russie": "RUSSIE",
@@ -79,15 +79,15 @@
       "j16m": "16 novembre, matin",
       "j16a": "16 novembre, après-midi",
       "nuit": "Nuit du 16 au 17 novembre",
-      "bilanDate": "Situation au 18 novembre",
+      "bilanDate": "Situation au 19 novembre",
       "vague1": "Première vague de drones",
       "destab": "Arche routière endommagée",
       "reprise": "La circulation reprend",
       "pal": "Palianytsia",
-      "palSous": "section routière",
+      "palSous": "charge de 100 kg · section routière",
       "missiles": "Neptune · Ruta · FP-5 Flamingo",
       "missilesCourt": "Neptune · Ruta · FP-5",
-      "missilesSous": "section ferroviaire",
+      "missilesSous": "charges de 350, 150 et 1 150 kg · section ferroviaire",
       "routier": "Pont routier",
       "ferro": "Pont ferroviaire",
       "versCrimee": "vers Kertch (Crimée)",
@@ -99,13 +99,17 @@
       "km5": "5 km",
       "km100": "100 km",
       "bRoute": "Route coupée",
-      "bRouteChiffre": "227 m",
-      "bRouteTexte": "de tablier tombés à l’eau avec l’arche",
+      "bRouteChiffre": "≈ 225 m",
+      "bRouteTexte": "de pont routier effondrés avec l’arche",
       "bRail": "Rail : trafic réduit",
-      "bRailTexte": "quelques trains franchissent encore le pont",
+      "bRailTexte": "frappé de nouveau le 19 novembre, les trains repassent",
       "bChenal": "Chenal obstrué",
       "bChenalTexte": "les débris bloquent le passage des navires",
-      "deboutCourt": "Arche ferroviaire debout"
+      "deboutCourt": "Arche ferroviaire debout",
+      "palSousCourt": "section routière",
+      "missilesSousCourt": "section ferroviaire",
+      "relaisSous": "guidage sans Starlink",
+      "bRailCourt": "trains rétablis l’après-midi"
     },
     "note": "Note&nbsp;: les positions des défenses russes, les trajectoires, les points de départ et les points d’impact sont schématiques."
   }

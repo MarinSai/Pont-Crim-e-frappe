@@ -65,7 +65,6 @@
   .legende{grid-area:1/1;display:flex;flex-direction:column;gap:6px;visibility:hidden;opacity:0;transition:opacity .3s}
   .legende.actif{visibility:visible;opacity:1}
   .legende h2{font-family:var(--titre);font-weight:700;font-size:20px;line-height:1.2}
-  .legende p{font-size:15.5px;line-height:1.5;color:#29292d;max-width:66ch}
 
   .source{font-size:12px;line-height:1.45;color:var(--gris);border-top:1px solid var(--filet);padding-top:10px}
 
@@ -78,7 +77,6 @@
     .nom{font-size:12px}
     .num{display:none}
     .legende h2{font-size:18px}
-    .legende p{font-size:15px}
   }
   @media (max-width:400px){
     :root{--marge:16px}
@@ -130,10 +128,10 @@
   </div>
 
   <div class="legendes">
-    <section class="legende" data-i="0"><h2>{{l0t}}</h2><p>{{l0p}}</p></section>
-    <section class="legende" data-i="1"><h2>{{l1t}}</h2><p>{{l1p}}</p></section>
-    <section class="legende" data-i="2"><h2>{{l2t}}</h2><p>{{l2p}}</p></section>
-    <section class="legende" data-i="3"><h2>{{l3t}}</h2><p>{{l3p}}</p></section>
+    <section class="legende" data-i="0"><h2>{{l0t}}</h2></section>
+    <section class="legende" data-i="1"><h2>{{l1t}}</h2></section>
+    <section class="legende" data-i="2"><h2>{{l2t}}</h2></section>
+    <section class="legende" data-i="3"><h2>{{l3t}}</h2></section>
   </div>
 
   <p class="source">{{note}}<br>{{source}}</p>

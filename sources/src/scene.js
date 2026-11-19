@@ -46,7 +46,7 @@
           salve: [[291, 480], [299, 440], [306, 395], [314, 400, 1], [322, 330], [330, 345], [338, 335], [346, 350]], defLabel: [254, 262] },
     s3: { chip: [18, 30, 'left'], vagues: 150, chenalY: 215,
           pal: [700, 364], mis: [169, 263], routier: [735, 475, 200], ferro: [317, 455, 40], crimee: [236, 75, 'right'], russieL: [520, 568, 'right'] },
-    s4: { route: [505, 50], routeC: [20, ROADY_ - 15], rail: [60, 380], railC: [-60, 9.2], chenal: [735, 292], chenalC: [4, -150] }
+    s4: { route: [505, 50], routeC: [20, ROADY_ - 15], rail: [60, 380], railC: [-177, 9.5], chenal: [735, 292], chenalC: [4, -150] }
   };
   const NARROW = {
     VW: 500, VH: 640, full: false,
@@ -60,7 +60,7 @@
           salve: [[291, 480], [301, 430], [312, 400, 1], [322, 330], [332, 345], [344, 350]], defLabel: [252, 262] },
     s3: { chip: [482, 30, 'right'], vagues: 100, chenalY: 112,
           pal: [400, 452], mis: [88, 330], routier: [300, 88, -200], ferro: [20, 520, 140], crimee: [482, 58, 'right'], russieL: [320, 598, 'right'] },
-    s4: { route: [270, 130], routeC: [20, ROADY_ - 15], rail: [14, 500], railC: [40, 9.2], chenal: [326, 306], chenalC: [4, -128] }
+    s4: { route: [270, 130], routeC: [20, ROADY_ - 15], rail: [18, 500], railC: [40, 9.2], chenal: [326, 306], chenalC: [4, -128] }
   };
 
   let L = null, s = 1, u = 1, dpr = 1;        // u = 1 px écran exprimé en unités de scène
@@ -428,7 +428,8 @@
       ctx.globalAlpha = a * aR;
       const brg = Math.atan2(B[1] - R2.stub[1], B[0] - R2.stub[0]);
       R2.relais.forEach((r, i) => delta(r[0], r[1] + 1.6 * Math.sin(t * 1.3 + i * 2) * u, 7, C.papier, C.bleu, brg));
-      const r1 = R2.relais[1]; if (L.full) label(T.relais, r1[0] + 12 * u, r1[1] + 17 * u, { w: 600, size: 12, align: 'left' }); else label(T.relais, r1[0] - 14 * u, r1[1] + 8 * u, { w: 600, size: 12, align: 'right' });
+      const r1 = R2.relais[1]; if (L.full){ label(T.relais, r1[0] + 12 * u, r1[1] + 17 * u, { w: 600, size: 12, align: 'left' }); label(T.relaisSous, r1[0] + 12 * u, r1[1] + 31 * u, { color: C.gris, size: 11.5, align: 'left' }); }
+      else { label(T.relais, r1[0] - 14 * u, r1[1] + 8 * u, { w: 600, size: 12, align: 'right' }); label(T.relaisSous, r1[0] - 14 * u, r1[1] + 22 * u, { color: C.gris, size: 11.5, align: 'right' }); }
       ctx.restore();
     }
 
@@ -473,13 +474,15 @@
   const L2S = (X, Y) => { const p = L.pont; return [p.cx + (X * CR - (Y - Y0) * SR) / p.mpu, p.cy + (X * SR + (Y - Y0) * CR) / p.mpu]; };
   // frappes : instant d'impact (s depuis le début de l'étape), cible, taille, direction d'arrivée (écran), famille
   const HITS = [
-    { t: 1.6, X: -52, Y: -60.5, k: .8, d: [-.86, -.5], f: 'v' }, { t: 2.0, X: 20, Y: -39.5, k: .8, d: [-.98, .2], f: 'v' }, { t: 2.4, X: 66, Y: -59, k: .8, d: [-.5, -.87], f: 'v' },
-    { t: 7.5, X: -82, Y: -52, k: .85, d: [-.9, -.43], f: 'p' }, { t: 7.9, X: -22, Y: -60, k: .85, d: [-.6, -.8], f: 'p' }, { t: 8.3, X: 42, Y: -44, k: .85, d: [-1, .05], f: 'p' },
-    { t: 8.8, X: 88, Y: -55, k: .85, d: [-.75, -.66], f: 'p' }, { t: 9.3, X: -50, Y: -42, k: .85, d: [-.97, -.24], f: 'p' }, { t: 9.8, X: 10, Y: -50, k: .85, d: [-.4, -.92], f: 'p' },
-    { t: 10.5, X: 60, Y: -60, k: .85, d: [-.86, -.5], f: 'p' }, { t: 11.2, X: -10, Y: -45, k: .85, d: [-.94, .34], f: 'p' },
-    { t: 8.5, X: -72, Y: 2, k: 1.1, d: [-.96, .28], f: 'm' }, { t: 9.5, X: 26, Y: 6.5, k: 1.1, d: [-.7, .71], f: 'm' }, { t: 10.2, X: 96, Y: -3, k: 1.1, d: [-1, 0], f: 'm' },
-    { t: 10.9, X: -30, Y: -6.5, k: 1.1, d: [-.82, .57], f: 'm' }, { t: 11.6, X: 54, Y: 0, k: 1.5, d: [-.9, .44], f: 'm', guide: 1 }
+    { t: 1.6, X: -84, Y: -61.5, k: .8, d: [-.86, -.5], f: 'v' }, { t: 2.0, X: -58, Y: -38.5, k: .8, d: [-.98, .2], f: 'v' }, { t: 2.4, X: -34, Y: -61, k: .8, d: [-.5, -.87], f: 'v' },
+    { t: 7.5, X: -104, Y: -60, k: .85, d: [-.9, -.43], f: 'p' }, { t: 7.9, X: 101, Y: -58, k: .85, d: [-.6, -.8], f: 'p' }, { t: 8.3, X: -98, Y: -40, k: .85, d: [-1, .05], f: 'p' },
+    { t: 8.8, X: 106, Y: -42, k: .85, d: [-.75, -.66], f: 'p' }, { t: 9.3, X: -60, Y: -61, k: .85, d: [-.97, -.24], f: 'p' }, { t: 9.8, X: 62, Y: -39, k: .85, d: [-.4, -.92], f: 'p' },
+    { t: 10.5, X: -20, Y: -60, k: .85, d: [-.86, -.5], f: 'p' }, { t: 11.2, X: 30, Y: -40, k: .85, d: [-.94, .34], f: 'p' },
+    { t: 8.5, X: -108, Y: -6.8, k: 1.1, d: [-.96, .28], f: 'm' }, { t: 9.5, X: 26, Y: 6.5, k: 1.1, d: [-.7, .71], f: 'm' }, { t: 10.2, X: 96, Y: -3, k: 1.1, d: [-1, 0], f: 'm' },
+    { t: 10.9, X: -52, Y: 2, k: 1.1, d: [-.82, .57], f: 'm' }, { t: 11.6, X: 54, Y: 0, k: 1.5, d: [-.9, .44], f: 'm', guide: 1 }
   ];
+  // frappe du 19 novembre (missiles Neptune) : deux à trois impacts sur une des deux voies, côté Kertch de l'arche (image Vantor, TWZ)
+  const N19 = [[-150, 2.85, 2.9], [-177, 2.85, 3.15], [-204, 2.85, 3.4]];
   const TC = 12.1;                                     // début de l'effondrement
   // palettes du pont : jour et nuit
   const PJ = { mer: '#e7f1f0', vague: '#c9dfdc', chenal: '#9fc7c3', bande: '#dfecea', ilot: '#f6f4ef', ilotB: '#cbc6ba', pile: '#d5d1c8', pileB: '#a8a397',
@@ -595,7 +598,7 @@
   function etatPont(tau, bilan){
     const st = { lean: 0, c: 0, hf: 1, trafic: 0, nuit: 0, dore: 0, sx: .06, sy: -.5, sa: .17 };
     if (bilan){ st.c = 1.6; st.hf = 0; st.nuit = 1 - easeIO(tau / 1.6); st.sa = .17 * (1 - st.nuit); return st; }
-    st.lean = 9 * easeIO((tau - 2.5) / 1.3);
+    st.lean = 4 * easeIO((tau - 2.5) / 1.3);
     st.c = Math.max(0, (tau - TC) / 1.7);
     st.hf = 1 - easeIO(clamp(st.c) * 1.15);
     st.trafic = Math.max(clamp(1 - (tau - 1.4) / .5), win(tau, 4.2, 6.0, .5));
@@ -606,7 +609,7 @@
     return st;
   }
   function dessinPont(t, tau, st, bilan, P){
-    const c = clamp(st.c), ce = easeIO(c), done = st.c >= 1, leanNow = c > 0 ? lerp(st.lean, 47, ce) : st.lean;
+    const c = clamp(st.c), ce = easeIO(c), done = st.c >= 1, leanNow = c > 0 ? st.lean + 7 * ce : st.lean;
     local(px => {
       // ombres portées des tabliers sur l'eau (jamais sur les tabliers eux-mêmes)
       if (st.sa > .005){
@@ -625,16 +628,16 @@
       }
       // épave de la travée routière
       if (c > 0){
-        const drop = lerp(0, 5, ce);
+        const drop = lerp(0, 3, ce);
         const piece = (x0, x1, pivot, ang) => { ctx.save(); ctx.translate(pivot, ROADY); ctx.rotate(ang * ce); ctx.translate(-pivot, -ROADY);
           ctx.fillStyle = done ? P.noye : mix(P.route, P.noye, ce); ctx.strokeStyle = done ? P.noyeB : P.trait; ctx.lineWidth = .9 * px;
-          if (done){ ctx.setLineDash([4 * px, 3 * px]); ctx.globalAlpha *= .62; }
+          if (done){ ctx.setLineDash([4 * px, 3 * px]); ctx.globalAlpha *= .42; }
           ctx.beginPath(); ctx.rect(x0, ROADY - ROADW - drop, x1 - x0, 2 * ROADW); ctx.fill(); ctx.stroke(); ctx.restore(); };
-        piece(-LH, -8, -LH, -.05); piece(-4, LH, LH, .065);
-        arche(px, ROADY - drop, ROADW + .6, leanNow, { braces: 7, col: done ? P.noyeB : P.acierB, fill: done ? mix(P.noye, P.acier, .45) : P.acier, alpha: done ? .85 : 1 });
+        piece(-LH, -14, -LH, -.022); piece(-9, LH, LH, .03);
+        arche(px, ROADY - drop, ROADW + .6, leanNow, { braces: 7, col: done ? P.noyeB : P.acierB, fill: done ? mix(P.noye, P.acier, .45) : P.acier, alpha: done ? .34 : 1 });
         if (done){ // débris émergés près des piles
           ctx.fillStyle = P.debris; ctx.strokeStyle = P.trait; ctx.lineWidth = .7 * px;
-          [[-104, -66, 9, .3], [-96, -47, 7, 1.1], [-88, -60, 6, 2.2], [-70, -72, 5, .7], [96, -62, 6, 1.7], [-30, -84, 4.5, .2]].forEach(([x, y, r, a]) => { ctx.beginPath(); for (let i = 0; i < 5; i++){ const an = a + i * 1.2566, rr = r * (.55 + .45 * rnd(i + x)); i ? ctx.lineTo(x + Math.cos(an) * rr, y + Math.sin(an) * rr) : ctx.moveTo(x + Math.cos(an) * rr, y + Math.sin(an) * rr); } ctx.closePath(); ctx.fill(); ctx.stroke(); });
+          [[-106, -58, 8, .3], [-98, -45, 6.5, 1.1], [-92, -62, 5.5, 2.2], [-80, -50, 4, .7], [104, -56, 7, 1.7], [97, -44, 5.5, .4], [90, -61, 4.5, 2.6], [-22, -57, 4, .2], [38, -46, 3.5, 1.3]].forEach(([x, y, r, a]) => { ctx.beginPath(); for (let i = 0; i < 5; i++){ const an = a + i * 1.2566, rr = r * (.55 + .45 * rnd(i + x)); i ? ctx.lineTo(x + Math.cos(an) * rr, y + Math.sin(an) * rr) : ctx.moveTo(x + Math.cos(an) * rr, y + Math.sin(an) * rr); } ctx.closePath(); ctx.fill(); ctx.stroke(); });
         }
         // écume
         const tf = (tau - TC - .75);
@@ -659,7 +662,7 @@
       }
       // train (bilan) : quelques trains franchissent encore le pont
       if (bilan){
-        const tx = lerp(520, -150, ease((tau - 3.0) / 7.6));
+        const tx = lerp(560, -262, ease((tau - 4.6) / 6.2));
         for (let i = 0; i < 9; i++){ ctx.fillStyle = i ? P.wagon : P.loco; ctx.fillRect(tx + i * 16.2, -2.85 - 1.6, 14.4, 3.2); }
       }
       // ombres des arches (sur l'eau et sur le tablier voisin)
@@ -681,12 +684,13 @@
     if (NU > .3) lueur(x, y, (h.guide ? 26 : 18) * u, '150,190,255', .5 * NU);
     delta(x, y, h.guide ? 10 : h.f === 'm' ? 8.5 : 7, tc(C.bleu), tc(C.bleu), ang);
   }
-  function bloc(x, y, titre, chiffre, texte, align = 'left', coul = C.rouge){   // encadré chiffré
+  function bloc(x, y, titre, chiffre, texte, align = 'left', coul = C.rouge, court = null){   // encadré chiffré
     let yy = y, wmax = 0;
     wmax = Math.max(wmax, label(titre, x, yy, { align, font: TITRE, w: 700, size: 14.5 })); yy += 18 * u;
     if (chiffre){ wmax = Math.max(wmax, label(chiffre, x, yy, { align, color: coul, w: 600, size: 14 })); yy += 16 * u; }
-    if (texte && L.full){ wmax = Math.max(wmax, label(texte, x, yy, { align, color: '#3b3b40', size: 12.5 })); yy += 15 * u; }
-    return { h: yy - y - 15 * u, w: wmax, mid: (y + yy - 15 * u) / 2 };
+    const tx = L.full ? texte : court;       // sur téléphone, seulement le texte court s'il existe
+    if (tx){ wmax = Math.max(wmax, label(tx, x, yy, { align, color: '#3b3b40', size: 12.5 })); yy += 15 * u; }
+    return { h: yy - y - 15 * u, w: wmax, mid: (y + yy - 15 * u) / 2, top: y - 10 * u, bot: yy - 7 * u };
   }
   const pos3 = (txt, fl, al) => al === 'right' ? txt + ' ' + fl : fl + ' ' + txt;
   function draw3(t, a){
@@ -725,8 +729,9 @@
     cote(o.crimee, pos3(T.versCrimee, '↖', o.crimee[2])); cote(o.russieL, pos3(T.versRussie, '↘', o.russieL[2]));
     { const p = L2S(0, o.chenalY); ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(ROT - Math.PI / 2); label(T.chenalNav, 0, 0, { size: 11.5, color: C.merTexte, italic: true, halo: false, clampX: false }); ctx.restore(); }
     // étiquette alignée à gauche, renvoyée vers une cible du pont (repère local)
-    const renvoi = (pos, cible, w, mid) => { const q = L2S(cible[0], cible[1]);
-      const sx = q[0] < pos[0] ? pos[0] - 6 * u : pos[0] + w + 6 * u; filet([[sx, mid], [q[0], mid], [q[0], q[1]]]); };
+    const renvoi = (pos, cible, m) => { const q = L2S(cible[0], cible[1]);
+      if (q[0] >= pos[0] && q[0] <= pos[0] + m.w){ filet([[q[0], q[1] < m.top ? m.top - 3 * u : m.bot + 3 * u], [q[0], q[1]]]); return; }
+      const sx = q[0] < pos[0] ? pos[0] - 6 * u : pos[0] + m.w + 6 * u; filet([[sx, m.mid], [q[0], m.mid], [q[0], q[1]]]); };
     // annotation centrée, filet vertical puis horizontal
     const an = (al, cible, txt, sous, pos, col = C.encre) => { if (al <= 0) return; ctx.save(); ctx.globalAlpha *= al; const q = L2S(cible[0], cible[1]);
       const y0 = q[1] > pos[1] ? pos[1] + (sous ? 25 : 10) * u : pos[1] - 10 * u;
@@ -734,17 +739,17 @@
       label(txt, pos[0], pos[1], { w: 600, size: 13, color: col }); if (sous) label(sous, pos[0], pos[1] + 15 * u, { size: 11.5, color: C.gris }); ctx.restore(); };
 
     if (!bilan){
-      { const w = label(T.ferro, o.ferro[0], o.ferro[1], { w: 600, size: 12.5, align: 'left' }); renvoi(o.ferro, [o.ferro[2], RAILW], w, o.ferro[1]); }
-      { const w = label(T.routier, o.routier[0], o.routier[1], { w: 600, size: 12.5, align: 'left' }); renvoi(o.routier, [o.routier[2], ROADY - ROADW], w, o.routier[1]); }
+      { const w = label(T.ferro, o.ferro[0], o.ferro[1], { w: 600, size: 12.5, align: 'left' }); renvoi(o.ferro, [o.ferro[2], RAILW], { w, mid: o.ferro[1], top: o.ferro[1] - 9 * u, bot: o.ferro[1] + 9 * u }); }
+      { const w = label(T.routier, o.routier[0], o.routier[1], { w: 600, size: 12.5, align: 'left' }); renvoi(o.routier, [o.routier[2], ROADY - ROADW], { w, mid: o.routier[1], top: o.routier[1] - 9 * u, bot: o.routier[1] + 9 * u }); }
       // repère de date
       const cp = o.chip, d1 = win(tau, .3, 4.0), d2 = win(tau, 4.2, 6.1), d3 = clamp((tau - 6.4) / .4);
       const dc = (al, txt, col, fill, ink) => { if (al <= 0) return; ctx.save(); ctx.globalAlpha *= al; chip(txt, cp[0], cp[1], col, fill, ink, cp[2]); ctx.restore(); };
       dc(d1, T.j16m, C.encre, C.papier, C.encre); dc(d2, T.j16a, C.encre, C.papier, C.encre); dc(d3, T.nuit, C.encre, C.encre, C.papier);
-      an(win(tau, 1.3, 2.9), [-52, -60.5], T.vague1, null, o.pal, C.bleu);
+      an(win(tau, 1.3, 2.9), [-58, -38.5], T.vague1, null, o.pal, C.bleu);
       an(win(tau, 3.0, 4.1), [0, ROADY - ROADW - 9], T.destab, null, o.pal);
       an(win(tau, 4.4, 6.0), [60, ROADY - ROADW], T.reprise, null, o.pal);
-      an(win(tau, 7.3, 11.9), [30, ROADY - ROADW - 2], T.pal, T.palSous, o.pal, C.bleu);
-      an(win(tau, 8.3, 12.3), [-40, RAILW + 2], L.full ? T.missiles : T.missilesCourt, T.missilesSous, o.mis, C.bleu);
+      an(win(tau, 7.3, 11.9), [62, ROADY + ROADW - 1], T.pal, L.full ? T.palSous : T.palSousCourt, o.pal, C.bleu);
+      an(win(tau, 8.3, 12.3), [-52, RAILW + 2], L.full ? T.missiles : T.missilesCourt, L.full ? T.missilesSous : T.missilesSousCourt, o.mis, C.bleu);
       an(clamp((tau - TC - 1.9) / .5), [10, ROADY - ROADW - 30], T.effondre, null, o.pal, C.rouge);
       an(clamp((tau - TC - 2.6) / .5), [-40, RAILW + 2], L.full ? T.debout : T.deboutCourt, null, o.mis);
     }
@@ -758,11 +763,16 @@
     if (bilan){
       const b = L.s4, cp = o.chip;
       chip(T.bilanDate, cp[0], cp[1], C.encre, C.papier, C.encre, cp[2]);
-      const a1 = clamp((tau - 1.2) / .5), a2 = clamp((tau - 3.4) / .5), a3 = clamp((tau - 7.4) / .5);
-      const enc = (al, pos, cible, titre, chiffre, texte) => { if (al <= 0) return; ctx.save(); ctx.globalAlpha *= al;
-        const m = bloc(pos[0], pos[1], titre, chiffre, texte, 'left'); renvoi(pos, cible, m.w, m.mid); ctx.restore(); };
+      // frappe du 19 novembre sur la voie ferrée
+      N19.forEach(([X, Y, t0], i) => { const age = tau - t0; if (age < 0) return; const [x, y] = L2S(X, Y);
+        ctx.fillStyle = 'rgba(20,20,20,.68)'; ctx.beginPath(); ctx.arc(x, y, 2.8 * u, 0, 7); ctx.fill();
+        for (let j = 0; j < 3; j++){ const an2 = rnd(i * 5 + j + 60) * 6.28; ctx.beginPath(); ctx.arc(x + Math.cos(an2) * 3.6 * u, y + Math.sin(an2) * 3.6 * u, 1.3 * u, 0, 7); ctx.fill(); }
+        impact(x, y, age, 1); });
+      const a1 = clamp((tau - 1.2) / .5), a2 = clamp((tau - 3.9) / .5), a3 = clamp((tau - 7.4) / .5);
+      const enc = (al, pos, cible, titre, chiffre, texte, court) => { if (al <= 0) return; ctx.save(); ctx.globalAlpha *= al;
+        const m = bloc(pos[0], pos[1], titre, chiffre, texte, 'left', C.rouge, court); renvoi(pos, cible, m); ctx.restore(); };
       enc(a1, b.route, b.routeC, T.bRoute, T.bRouteChiffre, T.bRouteTexte);
-      enc(a2, b.rail, b.railC, T.bRail, null, T.bRailTexte);
+      enc(a2, b.rail, b.railC, T.bRail, null, T.bRailTexte, T.bRailCourt);
       enc(a3, b.chenal, b.chenalC, T.bChenal, null, T.bChenalTexte);
     }
     echelle(T.m100, 100 / L.pont.mpu);

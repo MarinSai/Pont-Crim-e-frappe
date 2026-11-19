@@ -9,7 +9,7 @@ html = rd('gabarit.html')
 rep = {'lang': tx['lang'], 'titre': tx['titre'], 'chapo': tx['chapo'], 'aria': tx['aria'], 'lire': tx['lire'], 'source': tx['source'], 'note': tx['note']}
 for i, c in enumerate(tx['cle']): rep['cle%d' % i] = c
 for i, e in enumerate(tx['etapes']): rep['etape%d' % i] = e
-for i, (h, p) in enumerate(tx['legendes']): rep['l%dt' % i] = h; rep['l%dp' % i] = p
+for i, (h, p) in enumerate(tx['legendes']): rep['l%dt' % i] = h      # le paragraphe (p) n'est plus affiché, gardé dans textes.json
 nb = lambda s: re.sub(r' ([:;!?»])', ' \\1', s).replace('« ', '« ')   # espaces insécables avant la ponctuation haute
 for k, v in rep.items(): html = html.replace('{{%s}}' % k, nb(v) if k not in ('lang', 'source', 'note') else v)
 assert '{{' not in html, re.findall(r'\{\{\w+\}\}', html)
